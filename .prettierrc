@@ -1,0 +1,18 @@
+{
+  "printWidth": 88,
+  "tabWidth": 2,
+  "useTabs": false,
+  "semi": true,
+  "overrides": [
+    {
+      "files": ["*.js"],
+      "options": {
+        "singleQuote": true,
+        "quoteProps": "as-needed",
+        "trailingComma": "es5",
+        "endOfLine": "lf",
+        "arrowParens": "avoid"
+      }
+    }
+  ]
+}

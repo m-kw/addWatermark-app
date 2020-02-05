@@ -5,6 +5,8 @@
   "author": "m-kw",
   "license": "MIT",
   "dependencies": {
-    "jimp": "0.6.4"
+    "eslint": "^6.8.0",
+    "jimp": "0.6.4",
+    "prettier": "^1.19.1"
   }
 }
