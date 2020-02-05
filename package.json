@@ -1,0 +1,10 @@
+{
+  "name": "addWatermark-app",
+  "version": "1.0.0",
+  "main": "app.js",
+  "author": "m-kw",
+  "license": "MIT",
+  "dependencies": {
+    "jimp": "0.6.4"
+  }
+}
