@@ -64,39 +64,53 @@ const startApp = async () => {
     message: 'What file do you want to mark?',
     default: 'test.jpg',
   }, {
-    name: 'watermarkType',
-    type: 'list',
-    choices: ['Text watermark', 'Image watermark'],
+    name: 'edition',
+    message: 'Do you want to edit your picture?',
+    type: 'confirm',
   }]);
 
-  if (options.watermarkType === 'Text watermark') {
-    const text = await inquirer.prompt([{
-      name: 'value',
-      type: 'input',
-      message: 'Type your watermark text:',
+  if (options.edition) {
+    const editionOptions = await inquirer.prompt([{
+      name: 'editionType',
+      type: 'list',
+      choices: ['Brighten', 'Increase contrast', 'Make image b&w', 'Invert image'],
     }]);
-
-    options.watermarkText = text.value;
-
-    if (fs.existsSync(`./img/${options.inputImage}`)) {
-      addTextWatermarkToImage('./img/' + options.inputImage, './img/' + prepareOutputFilename(options.inputImage), options.watermarkText);
-    } else {
-      console.log('Something went wrong... Try again');
-    }
   } else {
-    const image = await inquirer.prompt([{
-      name: 'filename',
-      type: 'input',
-      message: 'Type your watermark name:',
-      default: 'logo.png',
+    const watermark = await inquirer.prompt([{
+      name: 'watermarkType',
+      type: 'list',
+      choices: ['Text watermark', 'Image watermark'],
     }]);
 
-    options.watermarkImage = image.filename;
+    if (watermark.watermarkType === 'Text watermark') {
+      const text = await inquirer.prompt([{
+        name: 'value',
+        type: 'input',
+        message: 'Type your watermark text:',
+      }]);
 
-    if (fs.existsSync(`./img/${options.inputImage}`) && fs.existsSync(`./img/${options.watermarkImage}`)) {
-        addImageWatermarkToImage('./img/' + options.inputImage, './img/' + prepareOutputFilename(options.inputImage), './img/' + options.watermarkImage);
+      watermark.watermarkText = text.value;
+
+      if (fs.existsSync(`./img/${options.inputImage}`)) {
+        addTextWatermarkToImage('./img/' + options.inputImage, './img/' + prepareOutputFilename(options.inputImage), watermark.watermarkText);
+      } else {
+        console.log('Something went wrong... Try again');
+      }
     } else {
-      console.log('Something went wrong... Try agaian');
+      const image = await inquirer.prompt([{
+        name: 'filename',
+        type: 'input',
+        message: 'Type your watermark name:',
+        default: 'logo.png',
+      }]);
+
+      watermark.watermarkImage = image.filename;
+
+      if (fs.existsSync(`./img/${options.inputImage}`) && fs.existsSync(`./img/${watermark.watermarkImage}`)) {
+          addImageWatermarkToImage('./img/' + options.inputImage, './img/' + prepareOutputFilename(options.inputImage), './img/' + watermark.watermarkImage);
+      } else {
+        console.log('Something went wrong... Try agaian');
+      }
     }
   }
 };
