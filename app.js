@@ -73,6 +73,13 @@ const increaseContrast = async function(inputFile, value) {
   image.quality(100).write(inputFile);
 };
 
+const makeGreyscale = async function(inputFile) {
+  const image = await Jimp.read(inputFile);
+  image.greyscale();
+
+  image.quality(100).write(inputFile);
+};
+
 const prepareOutputFilename = fileName => {
   const newFileName = fileName.split('.').join('-with-watermark.');
   return newFileName;
@@ -113,7 +120,9 @@ const startApp = async () => {
       await increaseContrast(`./img/${options.inputImage}`, 0.2);
     }
 
-    
+    if (editionOptions.editionType === 'Make image b&w') {
+      await makeGreyscale(`./img/${options.inputImage}`);
+    }
 
   }
   const watermark = await inquirer.prompt([{
