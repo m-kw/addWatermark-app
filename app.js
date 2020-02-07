@@ -80,6 +80,13 @@ const makeGreyscale = async function(inputFile) {
   image.quality(100).write(inputFile);
 };
 
+const invertColours = async function(inputFile) {
+  const image = await Jimp.read(inputFile);
+  image.invert();
+
+  image.quality(100).write(inputFile);
+};
+
 const prepareOutputFilename = fileName => {
   const newFileName = fileName.split('.').join('-with-watermark.');
   return newFileName;
@@ -109,7 +116,7 @@ const startApp = async () => {
     const editionOptions = await inquirer.prompt([{
       name: 'editionType',
       type: 'list',
-      choices: ['Brighten', 'Increase contrast', 'Make image b&w', 'Invert image'],
+      choices: ['Brighten', 'Increase contrast', 'Make image b&w', 'Invert colours'],
     }]);
 
     if (editionOptions.editionType === 'Brighten') {
@@ -122,6 +129,10 @@ const startApp = async () => {
 
     if (editionOptions.editionType === 'Make image b&w') {
       await makeGreyscale(`./img/${options.inputImage}`);
+    }
+
+    if (editionOptions.editionType === 'Invert colours') {
+      await invertColours(`./img/${options.inputImage}`);
     }
 
   }
