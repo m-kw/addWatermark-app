@@ -44,6 +44,33 @@ const addImageWatermarkToImage = async function(inputFile, outputFile, watermark
   }
 };
 
+const addWatermark = async function(inputFile, outputFile) {
+
+}
+
+const brightenImage = async function(inputFile) {
+  const image = await Jimp.read(inputFile);
+
+  const value = await inquirer.prompt([{
+    name: 'brightnessValue',
+    type: 'list',
+    choices: ['Brighten gently', 'Give me a lot of bright!'],
+  }]);
+
+  if (value.brightnessValue === 'Brighten gently') {
+    image.brightness(0.1);
+  } else {
+    image.brightness(0.5);
+  }
+
+  image.quality(100).write(inputFile);
+};
+
+const increaseContrast = async function(inputFile, value) {
+  const image = await Jimp.read(inputFile);
+  image.contrast(value);
+};
+
 const prepareOutputFilename = fileName => {
   const newFileName = fileName.split('.').join('-with-watermark.');
   return newFileName;
@@ -75,6 +102,11 @@ const startApp = async () => {
       type: 'list',
       choices: ['Brighten', 'Increase contrast', 'Make image b&w', 'Invert image'],
     }]);
+
+    if (editionOptions.editionType === 'Brighten') {
+      brightenImage(`./img/${options.inputImage}`);
+    }
+
   } else {
     const watermark = await inquirer.prompt([{
       name: 'watermarkType',
