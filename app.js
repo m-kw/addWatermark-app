@@ -2,7 +2,7 @@ const Jimp = require('jimp');
 const inquirer = require('inquirer');
 const fs = require('fs');
 
-const addTextWatermarkToImage = async function(inputFile, outputFile, text) {
+const addTextWatermarkToImage = async function (inputFile, outputFile, text) {
   try {
     const image = await Jimp.read(inputFile);
     const font = await Jimp.loadFont(Jimp.FONT_SANS_32_BLACK);
@@ -17,12 +17,12 @@ const addTextWatermarkToImage = async function(inputFile, outputFile, text) {
 
     console.log('Adding watermark finished with success!');
     startApp();
-  } catch(error) {
+  } catch (error) {
     console.log(error);
   }
 };
 
-const addImageWatermarkToImage = async function(inputFile, outputFile, watermarkFile) {
+const addImageWatermarkToImage = async function (inputFile, outputFile, watermarkFile) {
   try {
     const image = await Jimp.read(inputFile);
     const watermark = await Jimp.read(watermarkFile);
@@ -38,17 +38,12 @@ const addImageWatermarkToImage = async function(inputFile, outputFile, watermark
 
     console.log('Adding watermark finished with success!');
     startApp();
-  }
-  catch(error) {
+  } catch (error) {
     console.log(error);
   }
 };
 
-const addWatermark = async function(inputFile, outputFile) {
-
-}
-
-const brightenImage = async function(inputFile) {
+const brightenImage = async function (inputFile) {
   const image = await Jimp.read(inputFile);
 
   const value = await inquirer.prompt([{
@@ -66,28 +61,28 @@ const brightenImage = async function(inputFile) {
   image.quality(100).write(inputFile);
 };
 
-const increaseContrast = async function(inputFile, value) {
+const increaseContrast = async function (inputFile, value) {
   const image = await Jimp.read(inputFile);
   image.contrast(value);
 
   image.quality(100).write(inputFile);
 };
 
-const makeGreyscale = async function(inputFile) {
+const makeGreyscale = async function (inputFile) {
   const image = await Jimp.read(inputFile);
   image.greyscale();
 
   image.quality(100).write(inputFile);
 };
 
-const invertColours = async function(inputFile) {
+const invertColours = async function (inputFile) {
   const image = await Jimp.read(inputFile);
   image.invert();
 
   image.quality(100).write(inputFile);
 };
 
-const prepareOutputFilename = fileName => {
+const prepareOutputFilename = (fileName) => {
   const newFileName = fileName.split('.').join('-with-watermark.');
   return newFileName;
 };
@@ -134,8 +129,8 @@ const startApp = async () => {
     if (editionOptions.editionType === 'Invert colours') {
       await invertColours(`./img/${options.inputImage}`);
     }
-
   }
+
   const watermark = await inquirer.prompt([{
     name: 'watermarkType',
     type: 'list',
@@ -152,7 +147,7 @@ const startApp = async () => {
     watermark.watermarkText = text.value;
 
     if (fs.existsSync(`./img/${options.inputImage}`)) {
-      addTextWatermarkToImage('./img/' + options.inputImage, './img/' + prepareOutputFilename(options.inputImage), watermark.watermarkText);
+      addTextWatermarkToImage(`./img/${options.inputImage}`, `./img/${prepareOutputFilename(options.inputImage)}`, watermark.watermarkText);
     } else {
       console.log('Something went wrong... Try again');
     }
@@ -167,7 +162,7 @@ const startApp = async () => {
     watermark.watermarkImage = image.filename;
 
     if (fs.existsSync(`./img/${options.inputImage}`) && fs.existsSync(`./img/${watermark.watermarkImage}`)) {
-        addImageWatermarkToImage('./img/' + options.inputImage, './img/' + prepareOutputFilename(options.inputImage), './img/' + watermark.watermarkImage);
+      addImageWatermarkToImage(`./img/${options.inputImage}`, `./img/${prepareOutputFilename(options.inputImage)}`, `./img/${watermark.watermarkImage}`);
     } else {
       console.log('Something went wrong... Try agaian');
     }

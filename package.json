@@ -5,9 +5,12 @@
   "author": "m-kw",
   "license": "MIT",
   "dependencies": {
-    "eslint": "^6.8.0",
     "inquirer": "6.5.0",
-    "jimp": "0.6.4",
-    "prettier": "^1.19.1"
+    "jimp": "0.6.4"
+  },
+  "devDependencies": {
+    "eslint": "^6.8.0",
+    "eslint-config-airbnb-base": "^14.0.0",
+    "eslint-plugin-import": "^2.20.1"
   }
 }
